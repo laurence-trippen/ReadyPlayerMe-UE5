@@ -3,7 +3,7 @@
 
 #include "MyActor.h"
 
-#include "ReadyPlayerMeComponent.h"
+// #include "ReadyPlayerMeComponent.h"
 #include "ReadyPlayerMeRenderLoader.h"
 
 
@@ -13,6 +13,7 @@ AMyActor::AMyActor()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	Avatar2DLoader = CreateDefaultSubobject<UReadyPlayerMeRenderLoader>(TEXT("Avatar2DLoader"));
 }
 
 // Called when the game starts or when spawned

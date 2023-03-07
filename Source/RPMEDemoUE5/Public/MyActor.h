@@ -6,6 +6,9 @@
 #include "GameFramework/Actor.h"
 #include "MyActor.generated.h"
 
+// Forward Declarations
+class UReadyPlayerMeRenderLoader;
+
 UCLASS()
 class RPMEDEMOUE5_API AMyActor : public AActor
 {
@@ -23,4 +26,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+private:
+	UPROPERTY(VisibleAnywhere)
+	UReadyPlayerMeRenderLoader* Avatar2DLoader;
 };
