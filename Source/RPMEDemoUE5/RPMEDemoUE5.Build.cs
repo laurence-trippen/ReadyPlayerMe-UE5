@@ -9,5 +9,10 @@ public class RPMEDemoUE5 : ModuleRules
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "HeadMountedDisplay" });
-	}
+
+        PrivateDependencyModuleNames.AddRange(new string[] { "ReadyPlayerMe" });
+
+        // Dependencies Web Browser
+        PrivateDependencyModuleNames.AddRange(new string[] { "WebBrowserWidget", "WebBrowser", "UMG" });
+    }
 }
