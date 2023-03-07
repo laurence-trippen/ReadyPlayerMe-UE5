@@ -8,7 +8,9 @@
 
 // Forward Declarations
 class UTextBlock;
+class UImage;
 class UReadyPlayerMeRenderLoader;
+class UTexture2D;
 
 /**
  * 
@@ -24,7 +26,16 @@ protected:
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	UTextBlock* ItemTitle;
 
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	UImage* ItemImage;
+
 private:
 	UPROPERTY(VisibleAnywhere)
 	UReadyPlayerMeRenderLoader* Avatar2DLoader;
+
+	UFUNCTION()
+	void HandleDownloadImageCompleted(UTexture2D* Texture);
+
+	UFUNCTION()
+	void HandleDownloadImageFailed(const FString& ErrorMessage);
 };
