@@ -7,6 +7,8 @@
 #include "Components/Image.h"
 #include "ReadyPlayerMeRenderLoader.h"
 
+#include "AvatarItem.h"
+
 
 void URootUserWidget::NativeConstruct()
 {
