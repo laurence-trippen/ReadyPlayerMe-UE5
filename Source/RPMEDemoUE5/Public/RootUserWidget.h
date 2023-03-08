@@ -9,6 +9,7 @@
 // Forward Declarations
 class UTextBlock;
 class UImage;
+class UListView;
 class UReadyPlayerMeRenderLoader;
 class UTexture2D;
 
@@ -29,6 +30,9 @@ protected:
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	UImage* ItemImage;
 
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	UListView* AvatarListView;
+	
 private:
 	UPROPERTY(VisibleAnywhere)
 	UReadyPlayerMeRenderLoader* Avatar2DLoader;

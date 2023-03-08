@@ -11,5 +11,7 @@ void UAvatarListViewEntry::NativeOnListItemObjectSet(UObject* ListItemObject)
 {
 	UAvatarItem* Item = Cast<UAvatarItem>(ListItemObject);
 	NameLabel->SetText(FText::FromString(Item->GetName()));
-	IconImage->SetBrushFromTexture(Item->GetImage());
+
+	UTexture2D* ImageTexture = Item->GetImage();
+	if (ImageTexture) IconImage->SetBrushFromTexture(ImageTexture);
 }

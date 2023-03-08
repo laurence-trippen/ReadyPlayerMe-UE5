@@ -5,6 +5,8 @@
 
 #include "Components/TextBlock.h"
 #include "Components/Image.h"
+#include "Components/ListView.h"
+#include "AvatarItem.h"
 #include "ReadyPlayerMeRenderLoader.h"
 
 
@@ -41,6 +43,14 @@ void URootUserWidget::NativeConstruct()
 			DownloadImageFailedDelegate
 		);
 	}
+
+	UAvatarItem* TestAvatarItem = NewObject<UAvatarItem>();
+	TestAvatarItem->SetName("John 117");
+
+	TArray<UAvatarItem*> Avatars;
+	Avatars.Add(TestAvatarItem);
+
+	AvatarListView->SetListItems(Avatars);
 }
 
 
