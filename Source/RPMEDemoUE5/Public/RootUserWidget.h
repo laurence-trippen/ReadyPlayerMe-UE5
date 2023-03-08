@@ -9,10 +9,11 @@
 // Forward Declarations
 class UButton;
 class UTextBlock;
+class UEditableText;
 class UImage;
 class UListView;
-class UReadyPlayerMeRenderLoader;
 class UTexture2D;
+class UReadyPlayerMeRenderLoader;
 
 /**
  * 
@@ -30,6 +31,12 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	UImage* ItemImage;
+
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	UEditableText* AvatarURLTextInput;
+
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	UEditableText* AvatarNameTextInput;
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	UButton* CreateButton;
@@ -55,4 +62,7 @@ private:
 
 	UFUNCTION()
 	void HandleCancelButtonClicked();
+
+	UFUNCTION()
+	void ResetState();
 };
