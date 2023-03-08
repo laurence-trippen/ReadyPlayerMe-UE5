@@ -18,12 +18,7 @@ void URootUserWidget::NativeConstruct()
 
 	if (ItemTitle)
 	{
-		ItemTitle->SetText(FText::FromString(TEXT("Hello UI!!")));
-
-		if (Avatar2DLoader)
-		{
-			ItemTitle->SetText(FText::FromString(TEXT("Loader Set")));
-		}
+		ItemTitle->SetText(FText::FromString(TEXT("laurence_trippen")));
 	}
 
 	if (!Avatar2DLoader) return;
