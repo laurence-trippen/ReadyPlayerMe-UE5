@@ -32,7 +32,7 @@ void UAvatarItem::SetImage(UTexture2D* NewImage)
 	Image = NewImage;
 }
 
-const UTexture2D* UAvatarItem::GetImage() const
+UTexture2D* UAvatarItem::GetImage() const
 {
 	return Image;
 }

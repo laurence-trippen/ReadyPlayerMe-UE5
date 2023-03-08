@@ -41,5 +41,5 @@ public:
 	void SetImage(UTexture2D* NewImage);
 
 	UFUNCTION()
-	const UTexture2D* GetImage() const;
+	UTexture2D* GetImage() const;
 };
