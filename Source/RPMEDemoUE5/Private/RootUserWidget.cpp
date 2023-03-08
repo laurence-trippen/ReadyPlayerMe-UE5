@@ -25,26 +25,6 @@ void URootUserWidget::NativeConstruct()
 	{
 		ItemTitle->SetText(FText::FromString(TEXT("laurence_trippen")));
 	}
-
-	if (!Avatar2DLoader) return;
-
-	if (ItemImage)
-	{
-		
-	}
-
-	UAvatarItem* TestAvatarItem = NewObject<UAvatarItem>();
-	TestAvatarItem->SetName("John 117");
-
-	TArray<UAvatarItem*> Avatars;
-	Avatars.Add(TestAvatarItem);
-
-	AvatarListView->SetListItems(Avatars);
-
-	UAvatarItem* TestAvatarItem2 = NewObject<UAvatarItem>();
-	TestAvatarItem2->SetName("Mr Mister");
-
-	AvatarListView->AddItem(TestAvatarItem2);
 }
 
 
@@ -54,8 +34,8 @@ void URootUserWidget::HandleDownloadImageCompleted(UTexture2D* Texture)
 	// if (!ItemImage || !Texture) return;
 	// ItemImage->SetBrushFromTexture(Texture);
 
-	FString Url = AvatarURLTextInput->GetText().ToString();
-	FString Nickname = AvatarNameTextInput->GetText().ToString();
+	FString Url = FormCache.Url;
+	FString Nickname = FormCache.Name;
 
 	UAvatarItem* NewAvatarItem = NewObject<UAvatarItem>();
 	NewAvatarItem->SetName(Nickname);
@@ -75,9 +55,13 @@ void URootUserWidget::HandleDownloadImageFailed(const FString& ErrorMessage)
 void URootUserWidget::HandleCreateButtonClicked()
 {
 	FString Url = AvatarURLTextInput->GetText().ToString();
+	FString Nickname = AvatarNameTextInput->GetText().ToString();
 
 	// TODO: Validate Url
 	// TODO: Validate Name
+
+	FormCache.Name = Nickname;
+	FormCache.Url = Url;
 
 	TMap<EAvatarMorphTarget, float> BlendShapes;
 
@@ -94,16 +78,21 @@ void URootUserWidget::HandleCreateButtonClicked()
 		DownloadImageCompletedDelegate,
 		DownloadImageFailedDelegate
 	);
+
+	ResetState();
 }
 
 
 void URootUserWidget::HandleCancelButtonClicked()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Cancel Clicked"));
+	// GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Cancel Clicked"));
+
+	ResetState();
 }
 
 
 void URootUserWidget::ResetState()
 {
-
+	AvatarNameTextInput->SetText(FText::FromString(""));
+	AvatarURLTextInput->SetText(FText::FromString(""));
 }

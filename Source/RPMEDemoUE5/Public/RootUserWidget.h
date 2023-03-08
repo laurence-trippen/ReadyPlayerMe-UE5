@@ -15,6 +15,12 @@ class UListView;
 class UTexture2D;
 class UReadyPlayerMeRenderLoader;
 
+struct FCreateAvatarFormCache
+{
+	FString Name;
+	FString Url;
+};
+
 /**
  * 
  */
@@ -48,6 +54,8 @@ protected:
 	UListView* AvatarListView;
 	
 private:
+	FCreateAvatarFormCache FormCache;
+
 	UPROPERTY(VisibleAnywhere)
 	UReadyPlayerMeRenderLoader* Avatar2DLoader;
 
