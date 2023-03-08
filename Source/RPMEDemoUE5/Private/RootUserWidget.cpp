@@ -3,6 +3,7 @@
 
 #include "RootUserWidget.h"
 
+#include "Components/Button.h"
 #include "Components/TextBlock.h"
 #include "Components/Image.h"
 #include "Components/ListView.h"
@@ -16,7 +17,8 @@ void URootUserWidget::NativeConstruct()
 
 	Avatar2DLoader = NewObject<UReadyPlayerMeRenderLoader>();
 
-	UE_LOG(LogTemp, Warning, TEXT("Hello UI"));
+	CreateButton->OnClicked.AddUniqueDynamic(this, &ThisClass::HandleCreateButtonClicked);
+	CancelButton->OnClicked.AddUniqueDynamic(this, &ThisClass::HandleCancelButtonClicked);
 
 	if (ItemTitle)
 	{
@@ -51,6 +53,11 @@ void URootUserWidget::NativeConstruct()
 	Avatars.Add(TestAvatarItem);
 
 	AvatarListView->SetListItems(Avatars);
+
+	UAvatarItem* TestAvatarItem2 = NewObject<UAvatarItem>();
+	TestAvatarItem2->SetName("Mr Mister");
+
+	AvatarListView->AddItem(TestAvatarItem2);
 }
 
 
@@ -61,10 +68,28 @@ void URootUserWidget::HandleDownloadImageCompleted(UTexture2D* Texture)
 	if (!ItemImage || !Texture) return;
 
 	ItemImage->SetBrushFromTexture(Texture);
+
+	UAvatarItem* TestAvatarItem = NewObject<UAvatarItem>();
+	TestAvatarItem->SetName("laurence_trippen");
+	TestAvatarItem->SetImage(Texture);
+
+	AvatarListView->AddItem(TestAvatarItem);
 }
 
 
 void URootUserWidget::HandleDownloadImageFailed(const FString& ErrorMessage)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Download Failed"));
+}
+
+
+void URootUserWidget::HandleCreateButtonClicked()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Create Clicked"));
+}
+
+
+void URootUserWidget::HandleCancelButtonClicked()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Cancel Clicked"));
 }

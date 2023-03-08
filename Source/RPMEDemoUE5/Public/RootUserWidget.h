@@ -7,6 +7,7 @@
 #include "RootUserWidget.generated.h"
 
 // Forward Declarations
+class UButton;
 class UTextBlock;
 class UImage;
 class UListView;
@@ -31,6 +32,12 @@ protected:
 	UImage* ItemImage;
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	UButton* CreateButton;
+
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	UButton* CancelButton;
+
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	UListView* AvatarListView;
 	
 private:
@@ -42,4 +49,10 @@ private:
 
 	UFUNCTION()
 	void HandleDownloadImageFailed(const FString& ErrorMessage);
+
+	UFUNCTION()
+	void HandleCreateButtonClicked();
+
+	UFUNCTION()
+	void HandleCancelButtonClicked();
 };
