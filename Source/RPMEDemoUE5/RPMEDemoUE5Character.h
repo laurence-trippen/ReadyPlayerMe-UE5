@@ -25,6 +25,8 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Input)
 	float TurnRateGamepad;
 
+	void SwitchAvatar(const FString& Url);
+
 protected:
 
 	/** Called for forwards/backward input */

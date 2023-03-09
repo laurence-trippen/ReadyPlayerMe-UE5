@@ -11,6 +11,8 @@
 class UTextBlock;
 class UImage;
 class UReadyPlayerMeRenderLoader;
+class UButton;
+class UAvatarItem;
 
 /**
  * 
@@ -26,11 +28,20 @@ private:
 	UPROPERTY()
 	UReadyPlayerMeRenderLoader* Avatar2DLoader;
 
+	UPROPERTY()
+	UAvatarItem* AvatarItem;
+
 	UFUNCTION()
 	void HandleDownloadImageCompleted(UTexture2D* Texture);
 
 	UFUNCTION()
 	void HandleDownloadImageFailed(const FString& ErrorMessage);
+
+	UFUNCTION()
+	void HandleChooseButtonClicked();
+
+	UFUNCTION()
+	void HandleDeleteButtonClicked();
 
 protected:
 	virtual void NativeConstruct() override;
@@ -42,4 +53,10 @@ protected:
 
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* NameLabel;
+
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	UButton* ChooseButton;
+
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	UButton* DeleteButton;
 };

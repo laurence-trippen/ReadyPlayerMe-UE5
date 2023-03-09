@@ -99,6 +99,11 @@ void ARPMEDemoUE5Character::LookUpAtRate(float Rate)
 	AddControllerPitchInput(Rate * TurnRateGamepad * GetWorld()->GetDeltaSeconds());
 }
 
+void ARPMEDemoUE5Character::SwitchAvatar(const FString& Url)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, Url);
+}
+
 void ARPMEDemoUE5Character::MoveForward(float Value)
 {
 	if ((Controller != nullptr) && (Value != 0.0f))
