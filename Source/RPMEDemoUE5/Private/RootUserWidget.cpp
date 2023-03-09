@@ -34,9 +34,7 @@ void URootUserWidget::NativeConstruct()
 
 void URootUserWidget::HandleDownloadImageCompleted(UTexture2D* Texture)
 {
-	// UE_LOG(LogTemp, Warning, TEXT("Download Handled"));
-	// if (!ItemImage || !Texture) return;
-	// ItemImage->SetBrushFromTexture(Texture);
+	if (!Texture) return;
 
 	FString Url = FormCache.Url;
 	FString Nickname = FormCache.Name;
@@ -108,16 +106,18 @@ void URootUserWidget::SaveAvatars()
 {
 	UAvatarSaveGame* SaveGameInstance = Cast<UAvatarSaveGame>(UGameplayStatics::CreateSaveGameObject(UAvatarSaveGame::StaticClass()));
 	
-	FAvatarSaveGameData TestAvatarSaveData;
-	TestAvatarSaveData.Name = "I got saved";
-	TestAvatarSaveData.Url = "https://models.readyplayer.me/6405da175167081fc2edcb0d.glb";
+	TArray<UObject*> RawItems = AvatarListView->GetListItems();
 
-	FAvatarSaveGameData TestAvatarSaveData2;
-	TestAvatarSaveData2.Name = "I got saved too";
-	TestAvatarSaveData2.Url = "https://models.readyplayer.me/6405da175167081fc2edcb0d.glb";
+	for (auto RawItem : RawItems)
+	{
+		UAvatarItem* CastedItem = Cast<UAvatarItem>(RawItem);
 
-	SaveGameInstance->Avatars.Add(TestAvatarSaveData);
-	SaveGameInstance->Avatars.Add(TestAvatarSaveData2);
+		FAvatarSaveGameData AvatarSaveData;
+		AvatarSaveData.Name = CastedItem->GetName();
+		AvatarSaveData.Url = CastedItem->GetUrl();
+
+		SaveGameInstance->Avatars.Add(AvatarSaveData);
+	}
 
 	UGameplayStatics::SaveGameToSlot(SaveGameInstance, SaveGameInstance->SlotName, SaveGameInstance->UserIndex);
 }
@@ -127,8 +127,8 @@ void URootUserWidget::LoadAvatars()
 {
 	UAvatarSaveGame* LoadGameInstance = Cast<UAvatarSaveGame>(UGameplayStatics::CreateSaveGameObject(UAvatarSaveGame::StaticClass()));
 
+	// IMPORTANT: Check first if SaveGame .sav exists before loading it. Otherwise this will cause an Access violation.
 	bool bSaveGameExists = UGameplayStatics::DoesSaveGameExist(LoadGameInstance->SlotName, LoadGameInstance->UserIndex);
-
 	if (bSaveGameExists == false) return;
 
 	LoadGameInstance = Cast<UAvatarSaveGame>(UGameplayStatics::LoadGameFromSlot(LoadGameInstance->SlotName, LoadGameInstance->UserIndex));
