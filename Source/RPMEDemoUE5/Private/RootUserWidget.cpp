@@ -17,8 +17,6 @@ void URootUserWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	// Avatar2DLoader = NewObject<UReadyPlayerMeRenderLoader>();
-
 	CreateButton->OnClicked.AddUniqueDynamic(this, &ThisClass::HandleCreateButtonClicked);
 	CancelButton->OnClicked.AddUniqueDynamic(this, &ThisClass::HandleCancelButtonClicked);
 

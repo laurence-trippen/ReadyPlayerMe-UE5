@@ -7,6 +7,8 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "ReadyPlayerMeComponent.h"
+
 
 //////////////////////////////////////////////////////////////////////////
 // ARPMEDemoUE5Character
@@ -49,6 +51,9 @@ ARPMEDemoUE5Character::ARPMEDemoUE5Character()
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
+
+	// Create ReadyPlayerMeConpoonent
+	RPMNativeComponent = CreateDefaultSubobject<UReadyPlayerMeComponent>(TEXT("RPMNativeComponent"));
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -101,7 +106,27 @@ void ARPMEDemoUE5Character::LookUpAtRate(float Rate)
 
 void ARPMEDemoUE5Character::SwitchAvatar(const FString& Url)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, Url);
+	FAvatarLoadCompleted AvatarLoadCompletedDelegate;
+	AvatarLoadCompletedDelegate.BindUFunction(this, "HandleAvatarLoadCompleted");
+
+	FAvatarLoadFailed AvatarLoadFailedDelegate;
+	AvatarLoadFailedDelegate.BindUFunction(this, "HandleAvatarLoadFailed");
+
+	RPMNativeComponent->LoadNewAvatar(
+		Url, 
+		AvatarLoadCompletedDelegate,
+		AvatarLoadFailedDelegate
+	);
+}
+
+void ARPMEDemoUE5Character::HandleAvatarLoadCompleted()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Avatar Lodaed"));
+}
+
+void ARPMEDemoUE5Character::HandleAvatarLoadFailed(const FString& ErrorMessage)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, ErrorMessage);
 }
 
 void ARPMEDemoUE5Character::MoveForward(float Value)

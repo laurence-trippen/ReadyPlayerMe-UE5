@@ -18,6 +18,17 @@ class ARPMEDemoUE5Character : public ACharacter
 	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FollowCamera;
+
+	// Ready Player Me
+	UPROPERTY(VisibleAnywhere)
+	class UReadyPlayerMeComponent* RPMNativeComponent;
+
+	UFUNCTION()
+	void HandleAvatarLoadCompleted();
+
+	UFUNCTION()
+	void HandleAvatarLoadFailed(const FString& ErrorMessage);
+
 public:
 	ARPMEDemoUE5Character();
 
