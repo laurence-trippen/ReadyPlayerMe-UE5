@@ -73,4 +73,10 @@ private:
 
 	UFUNCTION()
 	void ResetState();
+
+	UFUNCTION()
+	void SaveAvatars();
+
+	UFUNCTION()
+	void LoadAvatars();
 };

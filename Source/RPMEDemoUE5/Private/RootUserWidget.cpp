@@ -3,12 +3,14 @@
 
 #include "RootUserWidget.h"
 
+#include "AvatarItem.h"
+#include "AvatarSaveGame.h"
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
 #include "Components/EditableText.h"
 #include "Components/Image.h"
 #include "Components/ListView.h"
-#include "AvatarItem.h"
+#include "Kismet/GameplayStatics.h"
 #include "ReadyPlayerMeRenderLoader.h"
 
 
@@ -25,6 +27,8 @@ void URootUserWidget::NativeConstruct()
 	{
 		ItemTitle->SetText(FText::FromString(TEXT("laurence_trippen")));
 	}
+
+	LoadAvatars();
 }
 
 
@@ -43,6 +47,8 @@ void URootUserWidget::HandleDownloadImageCompleted(UTexture2D* Texture)
 	NewAvatarItem->SetImage(Texture);
 
 	AvatarListView->AddItem(NewAvatarItem);
+
+	SaveAvatars();
 }
 
 
@@ -95,4 +101,40 @@ void URootUserWidget::ResetState()
 {
 	AvatarNameTextInput->SetText(FText::FromString(""));
 	AvatarURLTextInput->SetText(FText::FromString(""));
+}
+
+
+void URootUserWidget::SaveAvatars()
+{
+	UAvatarSaveGame* SaveGameInstance = Cast<UAvatarSaveGame>(UGameplayStatics::CreateSaveGameObject(UAvatarSaveGame::StaticClass()));
+	
+	FAvatarSaveGameData TestAvatarSaveData;
+	TestAvatarSaveData.Name = "I got saved";
+	TestAvatarSaveData.Url = "https://models.readyplayer.me/6405da175167081fc2edcb0d.glb";
+
+	FAvatarSaveGameData TestAvatarSaveData2;
+	TestAvatarSaveData2.Name = "I got saved too";
+	TestAvatarSaveData2.Url = "https://models.readyplayer.me/6405da175167081fc2edcb0d.glb";
+
+	SaveGameInstance->Avatars.Add(TestAvatarSaveData);
+	SaveGameInstance->Avatars.Add(TestAvatarSaveData2);
+
+	UGameplayStatics::SaveGameToSlot(SaveGameInstance, SaveGameInstance->SlotName, SaveGameInstance->UserIndex);
+}
+
+
+void URootUserWidget::LoadAvatars()
+{
+	UAvatarSaveGame* LoadGameInstance = Cast<UAvatarSaveGame>(UGameplayStatics::CreateSaveGameObject(UAvatarSaveGame::StaticClass()));
+
+	bool bSaveGameExists = UGameplayStatics::DoesSaveGameExist(LoadGameInstance->SlotName, LoadGameInstance->UserIndex);
+
+	if (bSaveGameExists == false) return;
+
+	LoadGameInstance = Cast<UAvatarSaveGame>(UGameplayStatics::LoadGameFromSlot(LoadGameInstance->SlotName, LoadGameInstance->UserIndex));
+
+	for (auto avatar : LoadGameInstance->Avatars)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, avatar.Name);
+	}
 }
