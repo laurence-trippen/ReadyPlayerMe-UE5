@@ -20,11 +20,6 @@ void URootUserWidget::NativeConstruct()
 	CreateButton->OnClicked.AddUniqueDynamic(this, &ThisClass::HandleCreateButtonClicked);
 	CancelButton->OnClicked.AddUniqueDynamic(this, &ThisClass::HandleCancelButtonClicked);
 
-	if (ItemTitle)
-	{
-		ItemTitle->SetText(FText::FromString(TEXT("laurence_trippen")));
-	}
-
 	LoadAvatars();
 }
 
@@ -101,5 +96,15 @@ void URootUserWidget::LoadAvatars()
 		NewAvatarItem->SetUrl(AvatarLoadData.Url);
 
 		AvatarListView->AddItem(NewAvatarItem);
+	}
+
+	// Default case; user never selected an Avatar 
+	if (LoadGameInstance->CurrentAvatar.Name.IsEmpty() || LoadGameInstance->CurrentAvatar.Url.IsEmpty())
+	{
+		if (ItemTitle) ItemTitle->SetText(FText::FromString(TEXT("Default Avatar")));
+	}
+	else
+	{
+		if (ItemTitle) ItemTitle->SetText(FText::FromString(LoadGameInstance->CurrentAvatar.Name));
 	}
 }

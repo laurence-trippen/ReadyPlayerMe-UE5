@@ -40,4 +40,7 @@ public:
 
 	UPROPERTY(VisibleAnywhere, Category = Basic)
 	TArray<FAvatarSaveGameData> Avatars;
+
+	UPROPERTY(VisibleAnywhere, Category = Basic)
+	FAvatarSaveGameData CurrentAvatar;
 };
