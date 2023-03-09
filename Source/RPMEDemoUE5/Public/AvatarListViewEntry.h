@@ -10,7 +10,7 @@
 // Forward Declarations
 class UTextBlock;
 class UImage;
-
+class UReadyPlayerMeRenderLoader;
 
 /**
  * 
@@ -20,7 +20,21 @@ class RPMEDEMOUE5_API UAvatarListViewEntry : public UUserWidget, public IUserObj
 {
 	GENERATED_BODY()
 
+private:
+	// TODO: Find a way to make this object to a static member without compile errors to have only one instance in memory.
+	// Alternatively this could be also accomplished with Dependency-Injection?
+	UPROPERTY()
+	UReadyPlayerMeRenderLoader* Avatar2DLoader;
+
+	UFUNCTION()
+	void HandleDownloadImageCompleted(UTexture2D* Texture);
+
+	UFUNCTION()
+	void HandleDownloadImageFailed(const FString& ErrorMessage);
+
 protected:
+	virtual void NativeConstruct() override;
+
 	virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
 
 	UPROPERTY(meta = (BindWidget))

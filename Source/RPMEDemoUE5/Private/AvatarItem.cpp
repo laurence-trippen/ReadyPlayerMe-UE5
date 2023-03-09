@@ -26,13 +26,3 @@ const FString& UAvatarItem::GetUrl() const
 {
 	return Url;
 }
-
-void UAvatarItem::SetImage(UTexture2D* NewImage)
-{
-	Image = NewImage;
-}
-
-UTexture2D* UAvatarItem::GetImage() const
-{
-	return Image;
-}

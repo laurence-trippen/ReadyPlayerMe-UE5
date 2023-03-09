@@ -21,9 +21,6 @@ private:
 	UPROPERTY()
 	FString Url;
 
-	UPROPERTY()
-	UTexture2D* Image;
-
 public:
 	UFUNCTION()
 	void SetName(const FString& NewName);
@@ -36,10 +33,4 @@ public:
 
 	UFUNCTION()
 	const FString& GetUrl() const;
-
-	UFUNCTION()
-	void SetImage(UTexture2D* NewImage);
-
-	UFUNCTION()
-	UTexture2D* GetImage() const;
 };

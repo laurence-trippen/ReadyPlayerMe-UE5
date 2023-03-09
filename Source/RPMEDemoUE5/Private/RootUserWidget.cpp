@@ -11,14 +11,13 @@
 #include "Components/Image.h"
 #include "Components/ListView.h"
 #include "Kismet/GameplayStatics.h"
-#include "ReadyPlayerMeRenderLoader.h"
 
 
 void URootUserWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	Avatar2DLoader = NewObject<UReadyPlayerMeRenderLoader>();
+	// Avatar2DLoader = NewObject<UReadyPlayerMeRenderLoader>();
 
 	CreateButton->OnClicked.AddUniqueDynamic(this, &ThisClass::HandleCreateButtonClicked);
 	CancelButton->OnClicked.AddUniqueDynamic(this, &ThisClass::HandleCancelButtonClicked);
@@ -32,30 +31,6 @@ void URootUserWidget::NativeConstruct()
 }
 
 
-void URootUserWidget::HandleDownloadImageCompleted(UTexture2D* Texture)
-{
-	if (!Texture) return;
-
-	FString Url = FormCache.Url;
-	FString Nickname = FormCache.Name;
-
-	UAvatarItem* NewAvatarItem = NewObject<UAvatarItem>();
-	NewAvatarItem->SetName(Nickname);
-	NewAvatarItem->SetUrl(Url);
-	NewAvatarItem->SetImage(Texture);
-
-	AvatarListView->AddItem(NewAvatarItem);
-
-	SaveAvatars();
-}
-
-
-void URootUserWidget::HandleDownloadImageFailed(const FString& ErrorMessage)
-{
-	UE_LOG(LogTemp, Warning, TEXT("Download Failed"));
-}
-
-
 void URootUserWidget::HandleCreateButtonClicked()
 {
 	FString Url = AvatarURLTextInput->GetText().ToString();
@@ -64,25 +39,13 @@ void URootUserWidget::HandleCreateButtonClicked()
 	// TODO: Validate Url
 	// TODO: Validate Name
 
-	FormCache.Name = Nickname;
-	FormCache.Url = Url;
+	UAvatarItem* NewAvatarItem = NewObject<UAvatarItem>();
+	NewAvatarItem->SetName(Nickname);
+	NewAvatarItem->SetUrl(Url);
 
-	TMap<EAvatarMorphTarget, float> BlendShapes;
+	AvatarListView->AddItem(NewAvatarItem);
 
-	FDownloadImageCompleted DownloadImageCompletedDelegate;
-	DownloadImageCompletedDelegate.BindUFunction(this, "HandleDownloadImageCompleted");
-
-	FDownloadImageFailed DownloadImageFailedDelegate;
-	DownloadImageFailedDelegate.BindUFunction(this, "HandleDownloadImageFailed");
-
-	Avatar2DLoader->Load(
-		Url,
-		ERenderSceneType::FullBodyPortrait,
-		BlendShapes,
-		DownloadImageCompletedDelegate,
-		DownloadImageFailedDelegate
-	);
-
+	SaveAvatars();
 	ResetState();
 }
 
@@ -133,8 +96,12 @@ void URootUserWidget::LoadAvatars()
 
 	LoadGameInstance = Cast<UAvatarSaveGame>(UGameplayStatics::LoadGameFromSlot(LoadGameInstance->SlotName, LoadGameInstance->UserIndex));
 
-	for (auto avatar : LoadGameInstance->Avatars)
+	for (auto AvatarLoadData : LoadGameInstance->Avatars)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, avatar.Name);
+		UAvatarItem* NewAvatarItem = NewObject<UAvatarItem>();
+		NewAvatarItem->SetName(AvatarLoadData.Name);
+		NewAvatarItem->SetUrl(AvatarLoadData.Url);
+
+		AvatarListView->AddItem(NewAvatarItem);
 	}
 }
