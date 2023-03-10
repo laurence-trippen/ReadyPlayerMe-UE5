@@ -91,11 +91,7 @@ void URootUserWidget::HandleAvatarDeleted(UAvatarItem* DeletedAvatar)
 
 void URootUserWidget::HandleDownloadImageCompleted(UTexture2D* Texture)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("1"));
-
 	if (!Texture) return;
-
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("2"));
 
 	ItemImage->SetBrushFromTexture(Texture);
 }
@@ -194,8 +190,6 @@ void URootUserWidget::SetCurrentAvatarUI(const FString& Url, const FString& Name
 	ItemTitle->SetText(FText::FromString(Name));
 
 	if (!Avatar2DLoader) return;
-
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, Url);
 
 	// Hook Download Delegates
 	TMap<EAvatarMorphTarget, float> BlendShapes;
