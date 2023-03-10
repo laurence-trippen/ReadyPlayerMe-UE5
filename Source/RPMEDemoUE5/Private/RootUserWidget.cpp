@@ -12,11 +12,26 @@
 #include "Components/Image.h"
 #include "Components/ListView.h"
 #include "Kismet/GameplayStatics.h"
+#include "ReadyPlayerMeRenderLoader.h"
+#include "ReadyPlayerMeEngineSubsystem.h"
 
 
 void URootUserWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
+
+	UReadyPlayerMeEngineSubsystem* ReadyPlayerMeSubsystem = GEngine->GetEngineSubsystem<UReadyPlayerMeEngineSubsystem>();
+	if (ReadyPlayerMeSubsystem)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Found Subsystem"));
+
+		Avatar2DLoader = ReadyPlayerMeSubsystem->GetAvatar2DLoader();
+
+		if (Avatar2DLoader)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Found Loader"));
+		}
+	}
 
 	CreateButton->OnClicked.AddUniqueDynamic(this, &ThisClass::HandleCreateButtonClicked);
 	CancelButton->OnClicked.AddUniqueDynamic(this, &ThisClass::HandleCancelButtonClicked);
@@ -63,7 +78,7 @@ void URootUserWidget::HandleAvatarChoosed(UAvatarItem* ChoosedAvatar)
 {
 	// GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, ChoosedAvatar->GetName());
 
-	ItemTitle->SetText(FText::FromString(ChoosedAvatar->GetName()));
+	SetCurrentAvatarUI(ChoosedAvatar);
 
 	// Save current set Avatar for next app launch
 	SaveAvatars(ChoosedAvatar);
@@ -147,4 +162,10 @@ void URootUserWidget::LoadAvatars()
 	{
 		if (ItemTitle) ItemTitle->SetText(FText::FromString(LoadGameInstance->CurrentAvatar.Name));
 	}
+}
+
+
+void URootUserWidget::SetCurrentAvatarUI(UAvatarItem* CurrentAvatar)
+{
+	ItemTitle->SetText(FText::FromString(CurrentAvatar->GetName()));
 }

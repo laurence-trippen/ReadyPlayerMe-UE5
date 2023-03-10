@@ -12,6 +12,7 @@
 #include "GameFramework/Character.h"
 
 #include <RPMEDemoUE5/RPMEDemoUE5Character.h>
+#include <RPMEDemoUE5/RPMEDemoUE5GameMode.h>
 
 
 void UAvatarListViewEntry::NativeConstruct()
@@ -22,6 +23,9 @@ void UAvatarListViewEntry::NativeConstruct()
 
 	ChooseButton->OnClicked.AddUniqueDynamic(this, &ThisClass::HandleChooseButtonClicked);
 	DeleteButton->OnClicked.AddUniqueDynamic(this, &ThisClass::HandleDeleteButtonClicked);
+
+	// ARPMEDemoUE5GameMode* GameMode = Cast<ARPMEDemoUE5GameMode>(UGameplayStatics::GetGameState(GetWorld()));
+	
 }
 
 

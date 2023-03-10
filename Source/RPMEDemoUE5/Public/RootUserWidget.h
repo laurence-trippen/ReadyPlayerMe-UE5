@@ -14,6 +14,7 @@ class UEditableText;
 class UImage;
 class UListView;
 class UTexture2D;
+class UReadyPlayerMeRenderLoader;
 
 
 /**
@@ -49,6 +50,9 @@ protected:
 	UListView* AvatarListView;
 	
 private:
+	UPROPERTY()
+	UReadyPlayerMeRenderLoader* Avatar2DLoader;
+
 	UFUNCTION()
 	void HandleCreateButtonClicked();
 
@@ -69,4 +73,7 @@ private:
 
 	UFUNCTION()
 	void LoadAvatars();
+
+	UFUNCTION()
+	void SetCurrentAvatarUI(UAvatarItem* CurrentAvatar);
 };
