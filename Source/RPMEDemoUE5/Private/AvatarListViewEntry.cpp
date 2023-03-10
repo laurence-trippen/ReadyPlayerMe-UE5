@@ -3,6 +3,7 @@
 
 #include "AvatarListViewEntry.h"
 #include "AvatarItem.h"
+#include "AvatarPlayerState.h"
 #include "Components/Button.h"
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
@@ -67,19 +68,29 @@ void UAvatarListViewEntry::HandleChooseButtonClicked()
 {
 	if (!AvatarItem) return;
 
-	ACharacter* character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 
-	if (!character) return;
+	// Switch Avatar
+	ACharacter* Character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 
-	ARPMEDemoUE5Character* thirdPersonCharacter = Cast<ARPMEDemoUE5Character>(character);
+	if (!Character) return;
 
-	if (!thirdPersonCharacter) return;
+	ARPMEDemoUE5Character* ThirdPersonCharacter = Cast<ARPMEDemoUE5Character>(Character);
 
-	thirdPersonCharacter->SwitchAvatar(AvatarItem->GetUrl());
+	if (!ThirdPersonCharacter) return;
+
+	ThirdPersonCharacter->SwitchAvatar(AvatarItem->GetUrl());
+
+
+	// Notify RootUserWidget reg. Avatar Choosed
+	AAvatarPlayerState* PlayerState = GetOwningPlayerState<AAvatarPlayerState>();
+	
+	if (!PlayerState) return;
+
+	PlayerState->OnAvatarChoosed.Broadcast(AvatarItem);
 }
 
 
 void UAvatarListViewEntry::HandleDeleteButtonClicked()
 {
-
+	
 }

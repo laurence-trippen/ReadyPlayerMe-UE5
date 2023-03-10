@@ -5,6 +5,7 @@
 
 #include "AvatarItem.h"
 #include "AvatarSaveGame.h"
+#include "AvatarPlayerState.h"
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
 #include "Components/EditableText.h"
@@ -19,6 +20,12 @@ void URootUserWidget::NativeConstruct()
 
 	CreateButton->OnClicked.AddUniqueDynamic(this, &ThisClass::HandleCreateButtonClicked);
 	CancelButton->OnClicked.AddUniqueDynamic(this, &ThisClass::HandleCancelButtonClicked);
+
+	AAvatarPlayerState* PlayerState = GetOwningPlayerState<AAvatarPlayerState>();
+	if (PlayerState)
+	{
+		PlayerState->OnAvatarChoosed.AddUniqueDynamic(this, &URootUserWidget::HandleAvatarChoosed);
+	}
 
 	LoadAvatars();
 }
@@ -48,6 +55,11 @@ void URootUserWidget::HandleCancelButtonClicked()
 	// GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Cancel Clicked"));
 
 	ResetState();
+}
+
+void URootUserWidget::HandleAvatarChoosed(UAvatarItem* ChoosedAvatar)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, ChoosedAvatar->GetName());
 }
 
 

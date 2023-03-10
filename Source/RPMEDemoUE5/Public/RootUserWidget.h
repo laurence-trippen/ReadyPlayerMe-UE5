@@ -7,6 +7,7 @@
 #include "RootUserWidget.generated.h"
 
 // Forward Declarations
+class UAvatarItem;
 class UButton;
 class UTextBlock;
 class UEditableText;
@@ -53,6 +54,9 @@ private:
 
 	UFUNCTION()
 	void HandleCancelButtonClicked();
+
+	UFUNCTION()
+	void HandleAvatarChoosed(UAvatarItem* ChoosedAvatar);
 
 	UFUNCTION()
 	void ResetState();
