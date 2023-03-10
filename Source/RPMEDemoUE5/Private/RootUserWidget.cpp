@@ -15,6 +15,8 @@
 #include "ReadyPlayerMeRenderLoader.h"
 #include "ReadyPlayerMeEngineSubsystem.h"
 
+#include <RPMEDemoUE5/RPMEDemoUE5Character.h>
+
 
 void URootUserWidget::NativeConstruct()
 {
@@ -174,6 +176,15 @@ void URootUserWidget::LoadAvatars()
 			LoadGameInstance->CurrentAvatar.Url,
 			LoadGameInstance->CurrentAvatar.Name
 		);
+
+		// Load last used Avatar
+		ACharacter* Character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+		if (!Character) return;
+
+		ARPMEDemoUE5Character* ThirdPersonCharacter = Cast<ARPMEDemoUE5Character>(Character);
+		if (!ThirdPersonCharacter) return;
+
+		ThirdPersonCharacter->SwitchAvatar(LoadGameInstance->CurrentAvatar.Url);
 	}
 }
 
