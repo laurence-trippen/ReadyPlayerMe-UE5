@@ -20,13 +20,17 @@ void UAvatarListViewEntry::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	// Avatar2DLoader = NewObject<UReadyPlayerMeRenderLoader>();
+	Avatar2DLoader = NewObject<UReadyPlayerMeRenderLoader>();
 
+	// This code is disabled because UReadyPlayerMeRenderLoader it seems that this
+	// class can not handle multiple Load() calls at the same time.
+	/*
 	UReadyPlayerMeEngineSubsystem* ReadyPlayerMeSubsystem = GEngine->GetEngineSubsystem<UReadyPlayerMeEngineSubsystem>();
 	if (ReadyPlayerMeSubsystem)
 	{
 		Avatar2DLoader = ReadyPlayerMeSubsystem->GetAvatar2DLoader();
 	}
+	*/
 
 	ChooseButton->OnClicked.AddUniqueDynamic(this, &ThisClass::HandleChooseButtonClicked);
 	DeleteButton->OnClicked.AddUniqueDynamic(this, &ThisClass::HandleDeleteButtonClicked);
