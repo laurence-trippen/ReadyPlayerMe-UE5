@@ -8,6 +8,7 @@
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
 #include "ReadyPlayerMeRenderLoader.h"
+#include "ReadyPlayerMeEngineSubsystem.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/Character.h"
 
@@ -19,13 +20,16 @@ void UAvatarListViewEntry::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	Avatar2DLoader = NewObject<UReadyPlayerMeRenderLoader>();
+	// Avatar2DLoader = NewObject<UReadyPlayerMeRenderLoader>();
+
+	UReadyPlayerMeEngineSubsystem* ReadyPlayerMeSubsystem = GEngine->GetEngineSubsystem<UReadyPlayerMeEngineSubsystem>();
+	if (ReadyPlayerMeSubsystem)
+	{
+		Avatar2DLoader = ReadyPlayerMeSubsystem->GetAvatar2DLoader();
+	}
 
 	ChooseButton->OnClicked.AddUniqueDynamic(this, &ThisClass::HandleChooseButtonClicked);
 	DeleteButton->OnClicked.AddUniqueDynamic(this, &ThisClass::HandleDeleteButtonClicked);
-
-	// ARPMEDemoUE5GameMode* GameMode = Cast<ARPMEDemoUE5GameMode>(UGameplayStatics::GetGameState(GetWorld()));
-	
 }
 
 
@@ -34,6 +38,8 @@ void UAvatarListViewEntry::NativeOnListItemObjectSet(UObject* ListItemObject)
 	// Cast List Item to Avatar Item
 	AvatarItem = Cast<UAvatarItem>(ListItemObject);
 	NameLabel->SetText(FText::FromString(AvatarItem->GetName()));
+
+	if (!Avatar2DLoader) return;
 
 	// Hook Download Delegates
 	TMap<EAvatarMorphTarget, float> BlendShapes;

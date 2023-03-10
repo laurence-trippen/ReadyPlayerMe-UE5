@@ -66,6 +66,12 @@ private:
 	void HandleAvatarDeleted(UAvatarItem* DeletedAvatar);
 
 	UFUNCTION()
+	void HandleDownloadImageCompleted(UTexture2D* Texture);
+
+	UFUNCTION()
+	void HandleDownloadImageFailed(const FString& ErrorMessage);
+
+	UFUNCTION()
 	void ResetState();
 
 	UFUNCTION()
@@ -75,5 +81,5 @@ private:
 	void LoadAvatars();
 
 	UFUNCTION()
-	void SetCurrentAvatarUI(UAvatarItem* CurrentAvatar);
+	void SetCurrentAvatarUI(const FString& Url, const FString& Name);
 };

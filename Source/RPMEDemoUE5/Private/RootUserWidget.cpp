@@ -23,14 +23,7 @@ void URootUserWidget::NativeConstruct()
 	UReadyPlayerMeEngineSubsystem* ReadyPlayerMeSubsystem = GEngine->GetEngineSubsystem<UReadyPlayerMeEngineSubsystem>();
 	if (ReadyPlayerMeSubsystem)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Found Subsystem"));
-
 		Avatar2DLoader = ReadyPlayerMeSubsystem->GetAvatar2DLoader();
-
-		if (Avatar2DLoader)
-		{
-			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Found Loader"));
-		}
 	}
 
 	CreateButton->OnClicked.AddUniqueDynamic(this, &ThisClass::HandleCreateButtonClicked);
@@ -68,17 +61,16 @@ void URootUserWidget::HandleCreateButtonClicked()
 
 void URootUserWidget::HandleCancelButtonClicked()
 {
-	// GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Cancel Clicked"));
-
 	ResetState();
 }
 
 
 void URootUserWidget::HandleAvatarChoosed(UAvatarItem* ChoosedAvatar)
 {
-	// GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, ChoosedAvatar->GetName());
-
-	SetCurrentAvatarUI(ChoosedAvatar);
+	SetCurrentAvatarUI(
+		ChoosedAvatar->GetUrl(),
+		ChoosedAvatar->GetName()
+	);
 
 	// Save current set Avatar for next app launch
 	SaveAvatars(ChoosedAvatar);
@@ -92,6 +84,24 @@ void URootUserWidget::HandleAvatarDeleted(UAvatarItem* DeletedAvatar)
 	AvatarListView->RemoveItem(DeletedAvatar);
 
 	SaveAvatars();
+}
+
+
+void URootUserWidget::HandleDownloadImageCompleted(UTexture2D* Texture)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("1"));
+
+	if (!Texture) return;
+
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("2"));
+
+	ItemImage->SetBrushFromTexture(Texture);
+}
+
+
+void URootUserWidget::HandleDownloadImageFailed(const FString& ErrorMessage)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Download Failed"));
 }
 
 
@@ -156,16 +166,40 @@ void URootUserWidget::LoadAvatars()
 	// Default case; user never selected an Avatar 
 	if (LoadGameInstance->CurrentAvatar.Name.IsEmpty() || LoadGameInstance->CurrentAvatar.Url.IsEmpty())
 	{
-		if (ItemTitle) ItemTitle->SetText(FText::FromString(TEXT("Default Avatar")));
+		ItemTitle->SetText(FText::FromString(TEXT("Default Avatar")));
 	}
 	else
 	{
-		if (ItemTitle) ItemTitle->SetText(FText::FromString(LoadGameInstance->CurrentAvatar.Name));
+		SetCurrentAvatarUI(
+			LoadGameInstance->CurrentAvatar.Url,
+			LoadGameInstance->CurrentAvatar.Name
+		);
 	}
 }
 
 
-void URootUserWidget::SetCurrentAvatarUI(UAvatarItem* CurrentAvatar)
+void URootUserWidget::SetCurrentAvatarUI(const FString& Url, const FString& Name)
 {
-	ItemTitle->SetText(FText::FromString(CurrentAvatar->GetName()));
+	ItemTitle->SetText(FText::FromString(Name));
+
+	if (!Avatar2DLoader) return;
+
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, Url);
+
+	// Hook Download Delegates
+	TMap<EAvatarMorphTarget, float> BlendShapes;
+
+	FDownloadImageCompleted DownloadImageCompletedDelegate;
+	DownloadImageCompletedDelegate.BindUFunction(this, "HandleDownloadImageCompleted");
+
+	FDownloadImageFailed DownloadImageFailedDelegate;
+	DownloadImageFailedDelegate.BindUFunction(this, "HandleDownloadImageFailed");
+
+	Avatar2DLoader->Load(
+		Url,
+		ERenderSceneType::FullBodyPortrait,
+		BlendShapes,
+		DownloadImageCompletedDelegate,
+		DownloadImageFailedDelegate
+	);
 }
