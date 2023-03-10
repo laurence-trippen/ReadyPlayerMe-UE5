@@ -12,6 +12,7 @@ class UAvatarItem;
 
 // Delegates
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAvatarChoosed, UAvatarItem*, ChoosedAvatar);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAvatarDeleted, UAvatarItem*, DeletedAvatar);
 
 /**
  * 
@@ -24,4 +25,7 @@ class RPMEDEMOUE5_API AAvatarPlayerState : public APlayerState
 public:
 	UPROPERTY(BlueprintAssignable)
 	FOnAvatarChoosed OnAvatarChoosed;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnAvatarDeleted OnAvatarDeleted;
 };

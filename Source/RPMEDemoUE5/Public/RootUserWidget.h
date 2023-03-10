@@ -59,6 +59,9 @@ private:
 	void HandleAvatarChoosed(UAvatarItem* ChoosedAvatar);
 
 	UFUNCTION()
+	void HandleAvatarDeleted(UAvatarItem* DeletedAvatar);
+
+	UFUNCTION()
 	void ResetState();
 
 	UFUNCTION()

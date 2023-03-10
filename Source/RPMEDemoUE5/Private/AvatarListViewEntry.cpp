@@ -92,5 +92,10 @@ void UAvatarListViewEntry::HandleChooseButtonClicked()
 
 void UAvatarListViewEntry::HandleDeleteButtonClicked()
 {
-	
+	// Notify RootUserWidget reg. Avatar Deleted
+	AAvatarPlayerState* PlayerState = GetOwningPlayerState<AAvatarPlayerState>();
+
+	if (!PlayerState) return;
+
+	PlayerState->OnAvatarDeleted.Broadcast(AvatarItem);
 }

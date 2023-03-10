@@ -25,6 +25,7 @@ void URootUserWidget::NativeConstruct()
 	if (PlayerState)
 	{
 		PlayerState->OnAvatarChoosed.AddUniqueDynamic(this, &URootUserWidget::HandleAvatarChoosed);
+		PlayerState->OnAvatarDeleted.AddUniqueDynamic(this, &URootUserWidget::HandleAvatarDeleted);
 	}
 
 	LoadAvatars();
@@ -60,6 +61,15 @@ void URootUserWidget::HandleCancelButtonClicked()
 void URootUserWidget::HandleAvatarChoosed(UAvatarItem* ChoosedAvatar)
 {
 	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, ChoosedAvatar->GetName());
+}
+
+void URootUserWidget::HandleAvatarDeleted(UAvatarItem* DeletedAvatar)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, DeletedAvatar->GetName());
+
+	AvatarListView->RemoveItem(DeletedAvatar);
+
+	SaveAvatars();
 }
 
 
