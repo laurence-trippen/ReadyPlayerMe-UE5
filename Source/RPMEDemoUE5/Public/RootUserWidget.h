@@ -65,7 +65,7 @@ private:
 	void ResetState();
 
 	UFUNCTION()
-	void SaveAvatars();
+	void SaveAvatars(UAvatarItem* CurrentAvatar = nullptr);
 
 	UFUNCTION()
 	void LoadAvatars();

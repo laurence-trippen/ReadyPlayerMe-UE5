@@ -58,14 +58,21 @@ void URootUserWidget::HandleCancelButtonClicked()
 	ResetState();
 }
 
+
 void URootUserWidget::HandleAvatarChoosed(UAvatarItem* ChoosedAvatar)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, ChoosedAvatar->GetName());
+	// GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, ChoosedAvatar->GetName());
+
+	ItemTitle->SetText(FText::FromString(ChoosedAvatar->GetName()));
+
+	// Save current set Avatar for next app launch
+	SaveAvatars(ChoosedAvatar);
 }
+
 
 void URootUserWidget::HandleAvatarDeleted(UAvatarItem* DeletedAvatar)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, DeletedAvatar->GetName());
+	// GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, DeletedAvatar->GetName());
 
 	AvatarListView->RemoveItem(DeletedAvatar);
 
@@ -80,10 +87,21 @@ void URootUserWidget::ResetState()
 }
 
 
-void URootUserWidget::SaveAvatars()
+void URootUserWidget::SaveAvatars(UAvatarItem* CurrentAvatar)
 {
 	UAvatarSaveGame* SaveGameInstance = Cast<UAvatarSaveGame>(UGameplayStatics::CreateSaveGameObject(UAvatarSaveGame::StaticClass()));
 	
+	// Save Current Avatar if passed
+	if (CurrentAvatar)
+	{
+		FAvatarSaveGameData CurrentAvatarSaveData;
+		CurrentAvatarSaveData.Name = CurrentAvatar->GetName();
+		CurrentAvatarSaveData.Url = CurrentAvatar->GetUrl();
+
+		SaveGameInstance->CurrentAvatar = CurrentAvatarSaveData;
+	}
+
+	// Save Avatars
 	TArray<UObject*> RawItems = AvatarListView->GetListItems();
 
 	for (auto RawItem : RawItems)
