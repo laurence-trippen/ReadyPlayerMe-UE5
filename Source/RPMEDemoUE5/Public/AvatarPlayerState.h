@@ -15,7 +15,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAvatarChoosed, UAvatarItem*, Choo
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAvatarDeleted, UAvatarItem*, DeletedAvatar);
 
 /**
- * 
+ * Inherited PlayerState for Player with Ready Player Me Avatar specific
+ * state & events.
  */
 UCLASS()
 class RPMEDEMOUE5_API AAvatarPlayerState : public APlayerState

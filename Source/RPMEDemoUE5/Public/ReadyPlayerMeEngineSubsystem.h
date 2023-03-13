@@ -12,7 +12,7 @@ class UReadyPlayerMeRenderLoader;
 
 
 /**
- * 
+ * Engine wide subsystem for accessing Ready Player Me specific instances.
  */
 UCLASS()
 class RPMEDEMOUE5_API UReadyPlayerMeEngineSubsystem : public UEngineSubsystem

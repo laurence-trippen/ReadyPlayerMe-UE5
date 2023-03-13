@@ -18,7 +18,8 @@ class UReadyPlayerMeRenderLoader;
 
 
 /**
- * 
+ * Derived UserWidget which is the Root of the UMG tree.
+ * This class binds UMG widgets with (BindWidget) for C++ UI access.
  */
 UCLASS(Abstract)
 class RPMEDEMOUE5_API URootUserWidget : public UUserWidget

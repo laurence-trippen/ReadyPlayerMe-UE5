@@ -6,7 +6,9 @@
 #include "GameFramework/SaveGame.h"
 #include "AvatarSaveGame.generated.h"
 
-
+/**
+ * This struct describes an SaveGameData entry for an Avatar.
+ */
 USTRUCT(BlueprintType)
 struct FAvatarSaveGameData
 {
@@ -22,7 +24,8 @@ struct FAvatarSaveGameData
 
 
 /**
- * 
+ * Custom derived USaveGame class for persisting user added Ready Player Me
+ * Avatars and last used Avatar.
  */
 UCLASS()
 class RPMEDEMOUE5_API UAvatarSaveGame : public USaveGame

@@ -15,7 +15,7 @@ class UButton;
 class UAvatarItem;
 
 /**
- * 
+ * Inherited UserWidget for Ready Player Me Avatar model ListView entries.
  */
 UCLASS(Abstract)
 class RPMEDEMOUE5_API UAvatarListViewEntry : public UUserWidget, public IUserObjectListEntry

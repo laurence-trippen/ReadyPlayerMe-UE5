@@ -10,7 +10,7 @@
 class UReadyPlayerMeRenderLoader;
 
 /**
- * 
+ * Game instance wide subsystem for accessing Ready Player Me specific instances.
  */
 UCLASS()
 class RPMEDEMOUE5_API UAvatarGameInstanceSubsystem : public UGameInstanceSubsystem

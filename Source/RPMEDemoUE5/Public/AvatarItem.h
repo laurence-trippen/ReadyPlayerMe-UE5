@@ -7,7 +7,7 @@
 #include "AvatarItem.generated.h"
 
 /**
- * 
+ * Avatar data model class for Ready Player Me Avatars.
  */
 UCLASS()
 class RPMEDEMOUE5_API UAvatarItem : public UObject
