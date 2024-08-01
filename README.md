@@ -1,6 +1,7 @@
 # Ready Player Me UE5 Integration
 
 ### Features
+* [x] Toggable Sidebar for managing multiple avatars
 * [x] Add Avatars
 * [x] Delete Avatars
 * [x] Save/Load USaveGame Avatars
